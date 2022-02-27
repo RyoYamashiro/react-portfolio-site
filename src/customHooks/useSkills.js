@@ -9,7 +9,11 @@ export const useSkills = () => {
     dispatch({type: actionTypes.fetch});
     axios.get('https://api.github.com/users/RyoSuzuki/repos')
       .then((response) => {
-        const languageList = response.map(res => res.language);
+        console.log(response);
+
+        const languageList = response.data.map(res => res.language);
+        console.log(languageList);
+
         const countedLanguageList = genarateLanguageCountObj(languageList);
         dispatch({type: actionTypes.success, payload: {languageList: countedLanguageList}});
       })
@@ -18,11 +22,11 @@ export const useSkills = () => {
       });
   }, []);
 
-  const generateLanguageCountObj = (allLanguageList) => {
+  const genarateLanguageCountObj = (allLanguageList) => {
     const notNullLanguageList = allLanguageList.filter(language => language != null);
     const uniqueLanguageList = [...new Set(notNullLanguageList)];
 
-    return unipueLanguageList.map(item => {
+    return uniqueLanguageList.map(item => {
       return {
         language: item,
         count: allLanguageList.filter(language => language === item).length
@@ -37,7 +41,7 @@ export const useSkills = () => {
   };
 
   const sortedLanguageList = () => (
-    state.languageList.sort((firstLang, nexLang) => nextLang.count - firstLang.count);
+    state.languageList.sort((firstLang, nextLang) => nextLang.count - firstLang.count)
   );
 
   return [sortedLanguageList, state.requestState, converseCountToPercentage];
