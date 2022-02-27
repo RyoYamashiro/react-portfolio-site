@@ -9,8 +9,6 @@ export const useSkills = () => {
     dispatch({type: actionTypes.fetch});
     axios.get('https://api.github.com/users/RyoSuzuki/repos')
       .then((response) => {
-        console.log(response);
-
         const languageList = response.data.map(res => res.language);
         console.log(languageList);
 
